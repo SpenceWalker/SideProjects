@@ -1,0 +1,307 @@
+DROP TABLE IF EXISTS manga, animes, anime_manga, anime_movies, anime_series_movies, anime_characters;
+
+CREATE TABLE manga
+(
+	manga_id SERIAL PRIMARY KEY,
+	title VARCHAR(250),
+	author_name VARCHAR (100) NOT NULL,
+	release_date DATE NOT NULL,
+	is_finished BOOLEAN,
+	is_animated BOOLEAN
+	
+);
+
+CREATE TABLE animes
+(
+	anime_id SERIAL PRIMARY KEY,
+	title VARCHAR(500)NOT NULL,
+	release_date DATE NOT NULL,
+	studio_publisher VARCHAR(500) NOT NULL,
+	number_of_episodes INTEGER, 
+	still_being_released BOOLEAN,
+	genre VARCHAR NOT NULL,
+	overview TEXT
+	
+);
+
+CREATE TABLE anime_manga
+(
+	manga_id INTEGER,
+	anime_id INTEGER,
+	
+	CONSTRAINT fk_manga_id FOREIGN KEY(manga_id) REFERENCES manga (manga_id),
+	CONSTRAINT fk_anime_id FOREIGN KEY(anime_id) REFERENCES animes (anime_id)
+);
+
+
+CREATE TABLE anime_movies
+(
+	movie_id SERIAL PRIMARY KEY, 
+	title VARCHAR(500),
+	length_minutes INTEGER,
+	release_date DATE,
+	genre VARCHAR(100),
+ 	is_cannon BOOLEAN NOT NULL
+
+);
+
+CREATE TABLE anime_series_movies
+(
+	movie_id INTEGER,
+	anime_id INTEGER,
+	
+	CONSTRAINT fk_movie_id FOREIGN KEY (movie_id) REFERENCES anime_movies (movie_id),
+	CONSTRAINT fk_anime_id FOREIGN KEY (anime_id) REFERENCES animes (anime_id)
+);
+
+
+CREATE TABLE anime_characters
+(
+	character_id SERIAL PRIMARY KEY, 
+	anime_id INTEGER,
+	first_name VARCHAR (50),
+	last_name VARCHAR (50),
+	birth_month INTEGER,
+	birth_date INTEGER,
+	is_dead BOOLEAN,
+	age INTEGER NOT NULL,
+	home_planet VARCHAR(100)NOT NULL,
+	occupation VARCHAR(300),
+	good BOOLEAN,
+	specialties_or_quirks VARCHAR(500),
+	personality_traits VARCHAR (1500),
+	overview TEXT,
+	is_main_character BOOLEAN,
+	
+	CONSTRAINT fk_anime_id FOREIGN KEY (anime_id) REFERENCES animes (anime_id)
+	
+);
+
+
+
+
+INSERT INTO manga(title, author_name, release_date, is_finished, is_animated)
+VALUES 			 ('One Piece', 'Eiichiro Oda', '1997-12-24', false, true),
+				 ('Bleach', 'Tite Kubo', '2001-08-07', true, true),
+				 ('Dragonball', 'Akira Toriyama', '1984-12-03', true, true),
+				 ('Dragonball Z', 'Akira Toriyama', '1989-12-03', true, true),
+				 ('Dragonball Super', 'Akira Toriyama', '2015-06-20', false, true),
+				 ('Attack On Titan', 'Hajime Isayama', '2009-09-09', true, true),
+				 ('Black Clover', 'Yuki Tabata', '2015-06-04', false, true),
+				 ('Death Note', 'Tsugumi Ohba', '2003-12-01', true, true),
+				 ('Tokyo Revengers', 'Ken Wakui', '2017-03-01', false, true),
+				 ('Demon Slayer', 'Koyogaru Gotouge', '2016-02-15', true, true),
+				 ('Seven Deadly Sins', 'Nakaba Suzuki', '2012-10-10', true, true),
+				 ('Tokyo Ghoul', 'Sui Ishida', '2011-09-13', true, true),
+				 ('JuJutsu-Kaisen', 'Gege Akutami', '2018-03-03', false, true),
+				 ('Chainsaw man', 'Tatsuki Fojimoto', '2018-12-06', false, false),
+				 ('One Punch Man', 'Yusuke Murata', '2012-06-14', false, true),
+				 ('Hunter x Hunter', 'Yoshihiro Togashi', '1998-06-04', false, true),
+				 ('My Hero Academia', 'Kohei Horikoshi', '2014-07-07', false, true),
+				 ('Vagabond', 'Takehiko Inoue', '1998-09-17', false, false);
+				 
+
+INSERT INTO animes(title, release_date, studio_publisher, number_of_episodes, still_being_released, genre, overview)
+VALUES			  ('One Piece', '1999-10-20', 'Viz Media', 981, true, 'adventure','Luffy and his pirate crew go in search of the infamous One Piece treasure.'),
+				  ('Bleach', '2004-10-05', 'Studio Pierrot', 366, false, 'action', '15 year old Kursosaki Ichigos life changes as he becomes a shinigami.'),
+				  ('Dragonball', '1986-02-26','Toei Animation', 153, false, 'action', 'Infant goku is sent to planet earth with intentions to destroy it.'),
+				  ('Dragonball Z','1989-04-26','Toei Animation',291, false, 'action', 'Adult Goku and his friends are tasked with defending the earth time and time again.'),
+				  ('Dragonball Super', '2015-07-05', 'Toei Animation', 131, false, 'action', 'Goku and his friends are once more tasked with saving not only the earth but also the universe.'),
+				  ('Attack On Titan', '2013-04-07', 'Kodansha', 82, true, 'horror', 'An unfair and unjust world which results in humans rebelling against their fate.'),
+				  ('Black Clover', '2017-10-03', 'Viz Media', 170, true, 'adventure', 'In a world full of magic, an orphaned boy who cant use a lick of magic aims to be the strongest.'),
+				  ('Death Note', '2006-10-03,', 'Viz Media', 37, false, 'mystery', 'A young highschool boy is given the power to play God by using a deadly notebook.'),
+				  ('Tokyo Revengers', '2021-04-11', 'Kodansha USA', 24, true, 'science fiction', '26 year old Takemitchiy on the verge of death is able to go back in time and try to save the woman he loves.'),
+				  ('Demon Slayer', '2019-04-06', 'Shueisha', 41, true, 'dark fantasy', 'Young Tonjiru is out selling charcoal one day to find his family massacred by demons, left only with pain and anger he vows to protect and serve others so it may never happen to them.'),
+				  ('Seven Deadly Sins', '2014-10-07', 'Netflix', 100, false, 'adventure', 'Meliodas and his six loveable yet detastable sins go on a journey to protect the magic kingdom.'),
+				  ('Tokoyo Ghoul', '2014-07-03', 'Shueisha', 48, false, 'horror', 'A college student whos loved ones have been killed by ghouls is suddenly now one.'),
+				  ('JuJutsu-Kaisen', '2020-10-03', 'Viz Media', 24, true, 'action', 'A young kid with a good heart now lays host to the most evil being in existence.'),
+				  ('One-Punch-Man', '2015-10-04', 'Viz Media', 24, false, 'action', 'Plain regular guy saitama wants to become the strongest, only to become bored once doing so.'),
+				  ('Hunter X Hunter', '2011-10-02', 'Viz Media', 150, false, 'adventure', 'A young boy name Gon goes in search of his father whom hes never met.'),
+				  ('My Hero Academia', '2016-04-03', 'Viz Media', 109, true, 'action', 'Quirkless Deku unable to fufill his dream of becoming a hero is on a quest to become the greatest hero to ever live.');
+				  
+				  
+INSERT INTO anime_movies(title, length_minutes, release_date, genre, is_cannon)
+VALUES					('Demon Slayer Mugen Train', 117, '2021-04-13', 'action', true),
+						('JuJutsu-Kaisen 0', 105, '2022-03-18', 'action', true),
+						('Bleach-Hell-Movie', 96, '2017-10-27', 'action', false),
+						('Bleach Fade to Black', 96, '2008-10-02', 'action', false),
+						('Dragonball Super Broly', 100, '2018-06-15','action', true),
+						('Dragonball Z Brolly Legendary Super Saiyan', 72, '1993-07-12', 'action', false),
+						('Your Name', 112, '2016-03-09', 'heartbreak', false),
+						('Garden Of words', 45, '2013-05-02', 'adventure', false);
+
+INSERT INTO anime_characters(anime_id, first_name, last_name, birth_month, birth_date, is_dead, age, home_planet, occupation, good, specialties_or_quirks, personality_traits,  is_main_character)
+VALUES 				  (1, 'Roronoa', 'Zoro', 11, 11, false, 21, 'East Blue', 'Swordsman of the straw hat pirates', true, 'three sword style', 'Gets lost, badass.', false),
+					  (1, 'Monkey D', 'Luffy', 05, 05, false, 19, 'East Blue', 'Captain of the thousand Sunny and the strawhat pirates', true, 'rubberman', 'childiish, whimsical', true),
+					  (1, 'Sanji', 'Vinsmoke', 03, 02, false, 21, 'North Blue', 'Chef of the straw hat pirates', true, 'very good at kicking things', 'pervert, chef', false),
+					  (1, 'Nami', '', 07, 03, false, 21, 'East Blue', 'Navigator of the straw hat pirates', true, 'talented at navigating and cartography', 'obsessed with treasure and money', false),
+					  (1, 'Tony Tony', 'Chopper', 12, 24, false, 17, 'Grand Line', 'Doctor of the straw hat pirates', true, 'turns into massive raindeer', 'friendly, annoying',  false),
+					  (1, 'Usopp', '', 04, 01, false, 19, 'East Blue', 'Sniper of the straw hat pirates', true, 'is really annoying', 'annoying', false),
+					  (1, 'Franky', '', 03, 09, false, 36, 'South Blue', 'Ship builder of the straw hat pirates', true, 'Is a cyborg', 'pervert', false),
+					  (1, 'Nico', 'Robin', 02, 06, false, 30, 'West Blue', 'Archaeologist and member of the straw hat pirates', true, 'Devil fruit eater', 'highly intelligent, beautiful',false),
+					  (1, 'Brooke', '', 04, 03, false, 90, 'West Blue', 'Undead Muscian for the straw hat pirates', true, 'Devil-fruit-eater', 'pervert', false),
+					  (1, 'Dracule', 'Mihawk', 03, 09, false, 43, 'Kuraigana Island', 'Warlord', true, 'Strongest swordmsan in the world', 'quiet, soft spoken', false),
+					  (1, 'Tralfagar', 'Law', 10, 06, false, 26, 'North Blue', 'Captain of the heart pirates', true, 'Devil-fruit-eater', 'smart, cunning', false),
+					  (1, 'Donquixote', 'Doflamingo', 10, 23, false, 41, 'Red Line', 'Warlord and criminal', false, 'Devil-fruit-eater', 'sadistic  evil', false),
+					  (1, 'Portgas D', 'Ace', 01, 01, true, 20, 'South Blue', 'Member of greybeard pirates, luffys brother', true, 'Devil-fruit-eater', 'funny, kind, caring', false),
+					  (1, 'Edward', 'Newgate', 04, 06, true, 72, 'Grand Line', 'Captain of the whitebeard pirates', true, 'Devil-fruit-eater', 'old, wise, strong, badass', false),
+					  (1, 'Boa', 'Hancock', 09, 02, false, 31, 'Amazon Lily', 'Captain of the kuja pirates, also a warlord', true, 'Devil-fruit-eater', 'smart, beautiful', false),
+					  (2, 'Ichigo', 'Kurosaki', 07, 15, false, 29, 'Karakura Town', 'Substitute Shinigami, but way too overpowered', true, 'Hollow, quincy, shinigami, full-bringer', 'Stubborn', true),
+					  (2, 'Yastuora', 'Sado', 04, 07, false, 28, 'Karakura Town', 'Professional boxer', true, 'Full-bring power', 'Stubborn, quiet, badass', false),
+					  (2, 'Uryu', 'Ishida', 11, 06, false, 27, 'Karakura Town', 'Doctor', true, 'Quincy', 'nerd, highly intelligent', false),
+					  (2, 'Orihime', 'Inoue', 09, 03, false, 29, 'Karakura Town', 'Mother', true, 'Shun shun rikka', 'afraid, kind, annoying, beautiful', false),
+					  (2, 'Shinji', 'Hirako', 05, 10, false, 24, 'Soul Society', 'Captain of 5th Division', true, 'Vizored', 'funny, pervert, lazy', false),
+					  (2, 'Kisuke', 'Urahara', 12, 31, false, 223,'Soul Society', 'OWner of the urahara shop', true, 'Shinigami', 'funny, pervert, lazy', false),
+					  (2, 'Kenpachi', 'Zaraki', 11, 19, false, 287, 'Soul Society', 'Captain of the 11th Division', true, 'Shinigami', 'strong, badass, impatient, aggressive', false),
+					  (2, 'Toshiro', 'Hitsugaya', 12, 20, false, 17, 'Soul Society', 'Captain of the 10th Divsion', true, 'Shinigami', 'Strong, smart, prodigy', false),
+					  (2, 'Byakuya', 'Kuchiki', 01, 31, false, 128, 'Soul Society', 'Captain of the 6th Divison', true, 'Shinigami', 'strong, smart, quiet', false),
+					  (2, 'Yoruchi', 'Shihoin', 01, 01, false, 224, 'Soul Society', 'Partners with Kissuke Urahara', true, 'Shinigami', 'strong, fast, stealthy', false),
+					  (2, 'Mayuri', 'Kurotsuchi', 03, 30, false, 205, 'Soul Society', 'Captain of the 12th Division', true, 'Shinigami', 'smart, cunning sadistic', false),
+					  (2, 'Sosuke', 'Aizen', 05, 29, false, 335, 'Soul Society', 'Leader of Espada, tries to be supreme god', false, 'Shinigami', 'smart, cunning, sadistic, evil, badass, strong, wise', false),
+					  (2, 'Rukia', 'Kuchiki', 01, 14, false, 171, 'Soul Society', 'Captain of the 13th Division', true, 'Shinigami', 'kind, thoughtful', false),
+					  (2, 'Rangiku', 'Matsumoto', 09, 29, false, 137, 'Soul Society', 'Lieutant of the 10th Division', true, 'Shinigami', 'beautiful, cunning', false),
+					  (2, 'Grimmjow', 'Jaegerjaquez', 07, 31, false, 178, 'Hueco Mundo', '', false, 'Espada', 'badass, aggressive, evil, sadistic', false),
+					  (2, 'Ulqoiorra', 'Cifer', 12, 01, true, 205, 'Hueco Mundo', 'Espada 4', false, 'Espada', 'badass, sadistic, empty, smart, cunning', false),
+					  (2, 'Ikkaku', ' Madarame', 11, 09, false, 286, 'Soul Society', 'Lieutant of the 11th Division', true, 'Shinigami', 'crazy, badass, funny', false),
+					  (2, 'Gin', 'Ichimaru', 09, 10, true, 137, 'Soul Society', 'Formerly Captain of the 3rd Divison, followed aizen', false, 'Shinigami', 'crazy, cunning, smart, strong, badass', false),
+					  (3, 'Son', 'Goku', 04, 16, false, 8, 'Earth', 'Saiyan baby sent to destroy earth', true, 'Martial artist', 'stupid strong, stupid', true),
+					  (3, 'Krillin', '', 05, 07, false, 9, 'Earth', 'best friend of goku, a human who managed to gain abnormal strength and powers', true, 'Martial artist', 'strong, stupid', false),
+					  (3, 'Tien', 'Shinhan', 03, 24, false, 10, 'Earth', 'rival of goku', false, 'Martial artist', 'strong, arrogant', false),
+					  (4, 'Son', 'Goku', 04, 16, false, 24, 'Earth', 'Z-Fighter', true, 'Super saiyan', 'stupid, strong', true),
+					  (4, 'Son', 'Gohan', 05, 11, false, 11, 'Earth', 'Z-Fighter', true, 'Super saiyan', 'smart, pacifist', false),
+					  (4, 'Krillin', '', 05, 07, false, 25, 'Earth', 'Z-Fighter', true, 'Expert martial artist', 'weak, cautious', false),
+					  (4, 'Tien', 'Shinhan', 03, 24, false, 26, 'Earth', 'Z-Fighter', true, 'Expert martial artist' ,'proud, unselfish', false),
+					  (4, 'Prince', 'Vegeta', 08, 14, false, 26, 'Planet Vegeta', 'Z-Fighter', true, 'Super Saiyan', 'proud, strong, badass, impatient, aggressive, cocky', false),
+					  (4, 'Majin', 'Buu', 01, 01, false, 786, 'Unknown', 'Created by an evil wizard to destroy all', false, 'Can regenerate over and over', 'childish, impatient, fat', false),
+					  (4, 'Lord', 'Frieza', 05, 18, true, 27, 'Unkown', 'Formerly supreme leader of the universe', false, 'Alien race capable of breathing in space', 'sadistic, evil, impatient', false),
+					  (4, 'Trunks', '', 06, 01, false, 25, 'Earth', 'Z-Fighter', true, 'Super Saiyan', 'friendly, kind, strong', false),
+					  (4, 'Piccolo', '', 05, 09, false, 25, 'Namek', 'Z-Fighter', true, 'Super Namekian', 'proud, smart', false),
+					  (4, 'Perfect', 'Cell', 02, 10, true, 2, 'Earth', 'A creation from Dr gero to destroy all of mankind', false, 'Cyborg mutant', 'arrogant, sadistic, evil', false),
+					  (4, 'Android', '17', 11, 12, false, 21, 'Earth', 'A cyborg created by Dr gero to destroy all of mankind', true, 'Cyborg', 'arrogant', false),
+					  (4, 'Android', '18', 11, 12, false, 21, 'Earth', 'Android seventeens twin, a cyborg created by Dr gero to destroy all of mankind', true, 'Cyborg', 'sassy, arrogant', false),
+					  (5, 'Eren', 'Yeager', 03, 30, false, 19, 'Earth', 'Scout regiment', true, 'Founding Titan', 'secretive, depressed', true),
+					  (5, 'Mikasa', 'Ackermann', 02, 10, false, 19, 'Earth', 'Scout regiment', true, 'Insane swordskills', 'passionate, caring', false),
+					  (5, 'Levi', 'Ackermann', 12, 25, false, 34, 'Earth', 'Scout regiment', true, 'Insane swordskills', 'quiet, strong, badass', false),
+					  (5, 'Erwin', 'Smith', 10, 14, true, 39, 'Earth', 'Former leader of Scout regiment', true, 'Intelligent', 'smart, cunning, fearless', false),
+					  (5, 'Kenny', 'Ackermann', 02, 04, true, 45, 'Earth', 'Cousin of Levi', false, 'Sharpshooter, insane swordskills', 'cunning, smart, greedy', false),
+					  (5, 'Armin', 'Arlet', 11, 03, false, 19, 'Earth', 'Commander of Survery regiment', true, 'Tactician', 'smart, cunning, thoughtful, scared', false),
+					  (5, 'Hange', 'Zoe', 09, 05, true, 28, 'Earth', 'Former leader of Scout regiment', true, 'Conducts experimental research on titans', 'intelligent, cunning', false),
+					  (5, 'Annie', 'Leonhart', 03, 30, false, 25, 'Earth', 'Former double agent of scout regiment', false, 'Female Titan', 'cunning, secretive',false),
+					  (6, 'Yuno', 'Grinberryall', 10, 11, false, 16, 'Spade Kingdom', 'Prince of spade kingdom', true, 'Golden dawn vice captain', 'smart, quiet, handsome', true),
+					  (6, 'Asta', '', 08, 11, false, 16, 'Clover Kingdom', 'Member of the black bull', true, 'Freakishly strong, master swordsman, uses anti-magic', 'dumb, resillient', true),
+					  (6, 'Yami', 'Sukehiro', 09, 17, false, 28, 'Hino Country', 'Captain of the black bulls', true, 'Freakishly strong, master swordsman, uses dark-magic', 'intelligent, strong, badass, resillient, handsome', true),
+					  (6, 'Noelle', 'Silva', 04, 17, false, 16, 'Clover Kingdom', 'Member of the black bulls', true, 'Smart and resourcesful, powerful magic, uses water-magic', 'intelligent, royalty, beautiful', false),
+					  (6, 'Nozel', 'Silva', 12, 30, false, 27, 'Clover Kingdom', 'Captain of the Silver Eagles', true, 'Uses mercury magic', 'intelligent, royalty, cunning, strong', false),
+					  (6, 'Fuegoleon', 'Vermillion', 08, 05, false, 27, 'Clover Kingdom', 'Captain of the Crimson Lions', true, 'Uses Fire Magic', 'brave, loyal, proud, strong', false),
+					  (6, 'Rill', 'Boismortier', 03, 16, false, 16, 'Clover Kingdom', 'Captain of the Aqua Deer', true, 'Uses art magic, paints a canvas and it comes to life', 'childish, immature, smart, prodigy', false),
+					  (6, 'William', 'Vangeance', 12, 24, false, 28, 'Clover Kingdom', 'Captain of the Golden Dawn', true, 'Uses world tree magic, can summon a tree of life', 'smart, sad, unloyal, strong', false),
+					  (6, 'Charlotte', 'Roselei', 09, 18, false, 31, 'Clover Kingdom', 'Captain of the Blue Rose', true, 'Uses plant magic', 'smart, intelligent, shy, beautiful', false),
+					  (6, 'Jack', 'Ripper', 06, 01, false, 32, 'Clover Kingdom', 'Captain of the Green Mantis', true, 'Uses slash magic', 'psychotic, strong, badass, sinister', false),
+					  (6, 'Dorothy', 'Unsworth', 03, 21, false, 22, 'Clover Kingdom', 'Captain of the Coral Peackocks', true, 'Uses dream magic', 'calm, quiet, always sleeping', false),
+					  (6, 'Dante', 'Zogratis', 04, 28, false, 32, 'Spade Kingdom', 'Member of Dark Triad', false, 'Uses body magic and gravity magic', 'sinister, sadistic, evil', false),
+					  (6, 'Vanica', 'Zogratis', 06, 27, false, 31, 'Spade Kingdom', 'Member of Dark Triad', false, 'Uses blood magic and curse warding magic', 'sinister, sadistic, evil', false),
+					  (6, 'Zenon', 'Zogratis', 12, 28, true, 31, 'Spade Kingdom', 'Member of Dark Triad', false, 'Bone Magic, spatial magic', 'sinister, sadistic, evil', false),
+					  (6, 'Lucifero', '', 00, 00 , false, 100000, 'Underworld', 'King of all devils', false, 'Gravity Magic', 'sinister, pure evil, in-humane', false),
+					  (6, 'Megicula', '', 00, 00, true, 10000, 'Underworld', 'High ranking devil', false, 'Blood Magic', 'sinister, pure evil, in-humane', false),
+					  (6, 'Beelzebub', '', 00, 00, false, 10000, 'Underworld', 'High ranking devil', false, 'Bone Magic', 'sinister, pure evil, in-humane', false),
+					  (6, 'Luck', 'Voltia', 10, 11, false, 19, 'Clover Kingdom', 'Member of the black bulls', true, 'Lightning Magic', 'joyful, kill happy, sinister', false),
+					  (6, 'Julius', 'Chrono', 10, 15, false, 42, 'Clover Kingdom', 'Wizard King of the Clover Kingdom', true, 'Time Magic', 'happy, knowledgeable, smart, strong', false),
+					  (7, 'Light', 'Yagami', 02, 28, true, 19, 'Earth', 'College student in possesion of a dangerous notebook', false, 'Owns a notebook that can kill just by writing names', 'cunning, genuis, prodigy, intelligent, smart, sadistic, narcissist, pyschotic', true),
+					  (7, 'Ryuk', '', 00, 00, false, 1000000, 'Other world', 'Death God', false, 'Owner of deathnote', 'funny, smart, cunning, all knowing', false),
+					  (7, 'L', '', 10, 31, true, 25, 'Earth', 'Detective', true, 'Best detective around', 'weird, funny, smart, prodigy, cunning', false),
+					  (8, 'Ken', 'Ryuguji', 05, 10, true, 21, 'Earth', 'Gang Member', true, '2nd Strongest gangmember', 'funny, strong, smart, badass', false),
+					  (8, 'Manjiro', 'Sano', 08, 20, false, 21,  'Earth', 'Leader of Gang', true, 'Super powerful', 'funny, strong, badass', false),
+					  (8, 'Takemichi', 'Hanagaki', 06, 25, false, 21, 'Earth', 'Gang member', true, 'nothing', 'weak, annoying', false),
+					  (9, 'Meliodas', '', 07, 25, false, 3000, 'Hell', 'Leader of the seven deadly sins and the Demon kings son',true, 'Sort of immortal, full counter', 'funny, peverted, strong, immortal, badass', true),
+					  (9, 'Ban', 'The undead', 02, 14, false, 1114, 'Earth', 'Member of the seven deadly sins', true, 'Fox sin of greed, Immortal cannot be killed', 'funny, good cook, badass', false),
+					  (9, 'Diane', '', 12, 24, false, 750, 'Earth', 'Member of the seven deadly sins', true, 'Serpent sin of envy, From the giant race', 'funny, sweet, strong', false),
+					  (9, 'Merlin', '', 12, 03, false, 3000, 'Earth', 'Member of the seven deadly sins', true, 'Boar sin of gluttonoy', 'intelligent, sort of immortal', false),
+					  (9, 'King', '', 04, 01, false, 1300, 'Earth', 'Member of the seven deadly sins and Fairy king', true, 'Grizzly Sin of sloth (Weilder of the spirit spear)', 'intelligent', false),
+					  (9, 'Escanor', '', 07, 01, true, 41, 'Earth', 'Member of the seven deadly sins', true, 'Lion sin of pride, Strongest human', 'Arrogant, cocky, dependable, strong, badass', false),
+					  (9, 'Gowther', 'of Selflessness', 06, 02, false, 4000, 'Hell', 'Member of the seven deadly sins, former 10th commandment', true, 'Goat sin of lust','has no heart, emotionless', false),
+					  (9, 'Zeldris', 'of Piety', 02, 05, false, 252, 'Hell', 'Leader of the 10 commandments', false, 'Son of the demon king, commandment of piety - all who betray him are cursed for life', 'badass, cruel, evil', false),
+					  (9, 'Estarossa', 'of Love', 01, 14, false, 4700, 'Hell', 'Member of the 10 commandments', false, 'Son of the demon king, commandment of charity - anyone who holds hatred infront of him is unable to gather strength ', 'badass, crazy, cruel, sadistic', false),
+					  (9, 'Galand', 'Of truth', 01, 14, true, 991, 'Hell', 'Member of the 10 commandments', false, 'commandment of truth - All who lie before him turn into stone', 'sadistic, evil, cruel', false),
+					  (9, 'Monspeet', 'the Reticence', 08, 08, true, 415, 'Hell', 'Member of the 10 commandments', false, 'commandment of reticence - those who expressed emotions would have there voices blocked', 'soft spoken, non violent, in love', false),
+					  (9, 'Derieri', 'the Purity', 10, 30, true, 377, 'Hell', 'Member of the 10 commandments', false, 'commandment of purity - anyone who commits umpure deeds in her presence will be inflincted with illness', 'quiet, short tempered, non violent', false),
+					  (9, 'Gloxinia', 'the Repose', 03, 18, true, 1400, 'Earth', 'Member of the 10 commandments, former fairy king', false, 'commandment of repose - anyone who fights in his presence will get there magic sealed away', 'quiet, smart, cunning', false),
+					  (9, 'Melascula', 'of Faith', 10,10, false, 362, 'Hell', 'Member of the 10 commandments', false, 'commandment of faith - all who are faithless before her will have there eyes set ablaze', 'sadistic, cruel, evil', false),
+					  (10, 'Tanjiro', 'Kamado', 07, 14, false, 16, 'Earth', 'Member of the demon slayers', true, 'The final sun breather, also a water breather', 'courageous, heroic, brave, kind, calm, gentle, strong', true),
+					  (10, 'Nezuko', 'Kamado', 12, 28, false, 14, 'Earth', 'Tanjiros little sister', true, 'A demon who is able to control her desire to kill others, instead wishes to help humans', 'quiet, protective, calm, kind', true),
+					  (10, 'Tanuro', 'Kamdao', 00, 00, false, 29, 'Earth', 'Tanjiros deceased father', true, 'A former sun breather', 'unknown', false),
+					  (10, 'Inosuke', 'Hashibiria', 04, 22, false, 16, 'Earth', 'Member of the demon slayer corps', true, 'Uses dual weilded swords and beast breathing', 'immature, impatient, strong, fast, funny, badass', false),
+					  (10, 'Zenitsu', 'Agatsuma', 09, 03, false, 16, 'Earth', 'Member of the demon slayer corps', true, 'Uses thunder breathing', 'scared, coward, pervert, strong, annoying, cries alot, fast', false),
+					  (10, 'Kagaya', 'Ubuyashiki', 00, 00, true, 23, 'Earth', 'Leader of the demon slayer corps', true, 'Unknown, is deathly ill but widely respected', 'kind, compassionate, brave, justice', false),
+					  (10, 'Giyu', 'Tomioka', 02, 08, false, 21, 'Earth', 'Water Hashira of the demon slayer corps', true, 'Master at  water breathing, expert swordsman', 'quiet, compassionate, kind, cold, emotionless', false),
+					  (10, 'Mitsuri', 'Kanroji', 06, 01, true, 19, 'Earth', 'Love Hashira of the demon slayer corps', true, 'Master of love breathing, expert swordsman', 'flirty, beautiful, easily impressed, awe-struck, kind', false),
+					  (10, 'Obanai', 'Iguro', 09, 15, true, 21, 'Earth', 'Serpent Hashira of the demon slayer corps', true, 'Master of serpent breathing, expert swordsman', 'arrogant, judgemental, not easily impressed, quiet', false),
+					  (10, 'Sanemi', 'Shinazugawa', 11, 29, true, 21,'Earth', 'Wind Hashira of the demon slayer corps', true, 'Master of wind breathing, expert swordsman', 'arrogant, judgemental, sadistic, crazy, badass, fast, short tempered, impatient, rude', false),
+					  (10, 'Gyomei', 'Himejima', 08, 23, true, 27, 'Earth', 'Stone Hashira of the demon slayer corps', true, 'Master of stone breathing, expert swordsman, considered to be the strongest Hashira', 'soft spoken, kind, always crying, philosopher', false),
+					  (10, 'Muichiro', 'Tokito', 08, 08, false, 14, 'Earth', 'Mist Hashira of the demon slayer corps', true, 'Master of mist breathing, expert swordsman, considered to be a prodigy', 'quiet, drifts off, peaceful', false),
+					  (10, 'Shinobu', 'Kocho', 02, 24, true, 18, 'Earth', 'Insect Hashira of the demon slayer corps', true, 'Master of insect breathing, expert swordsman, medical professional', 'scary, beautiful, quiet, kind, peaceful, non-violent', false),
+					  (10, 'Tengen', 'Uzui', 10, 31, false, 23, 'Earth', 'Sound Hashira of the demon slayer corps', true, 'Master of sound breahting, expert swordsman, former shinobi', 'noteably flashly, very arrogant, very confident, fast, funny, strong, intense', false),
+					  (10, 'Kyojuro', 'Rengoku', 05, 10, true, 20, 'Earth', 'Flame Hashira of the demon slayer corps', true, 'Master at flame breathing, expert swordsman', 'compassionate, strong, proud, happy, weird', false),
+					  (10, 'Kanano', 'Tsuyuri', 05, 19, false, 16, 'Earth', 'Member of the demon slayer corps', true, 'Flower breathing, expert swordsman', 'compassionate, quiet, trauma-stricken, fast, kind', false),
+					  (10, 'Genya', 'Shinazugawa', 01, 07, false, 16, 'Earth', 'Member of the demon slayer corps', true, 'Demon breathing', 'Rude, arrogant, scary, badass', false),
+					  (10, 'Muzan', 'Kibutsuji', 00, 00, true, 10000, 'Earth', 'Father of all demons, creater/leader of the twelve kizuki, the twelve strongest demons', false, 'can shape shift and blend into humanity', 'Evil, pure evil, sadistic, powerful, strong', false),
+					  (10, 'Rui', '', 00, 00, true, 13, 'Earth', 'Member of the twelve Kizuki, lower moon five', false, 'Uses blood demon magic creates webs of blood that encapture and slice opponents in half', 'pure evil, sadistic, corrupt, emotionless', false),
+					  (10, 'Daki', '', 00, 00, true, 126, 'Earth', 'Member of the twelve Kizuki, upper moon six', false, 'Uses blood demon magic can manipulate her body to become sharp and soft with the use of belts, brother to gyutaro, cannot be killed unless both are beheaded at the same time', 'pure evil, sadistic, judgemental, self absorbed, trauma-stricken, sad, beautiful', false),
+					  (10, 'Gyutaro', '', 00, 00, true, 126, 'Earth', 'Member of the twelve Kizuki, upper moon six', false, 'Uses blood demon magic which posions the body, master swordsman, incredibly fast, brother to daki, cannot be killed unless both beheaded at the same time', 'sadistic, sad, miserable, ugly, judgemental, trauma-stricken', false),
+					  (10, 'Akaza', '', 00, 00, true, 133, 'Earth', 'Member of the twelve Kizuki, upper moon three', false, 'Uses blood demon magic to create and target weakspots on opponents, is an expert martial artist, can regenerate faster than all other demons', 'has morals, refueses to eat and kill woman, strong, badass, respectful, resembles human-like traits, loves fighting, doesnt like to kill those he deems strong', false),
+					  (10, 'Doma', '', 00, 00, true, 133, 'Earth', 'Member of the twelve Kizuki, upper moon two', false, 'Uses blood demon magic to absorb humans faster, immensely powerful', 'truly evil, sadistic, targets woman exclusively, is obsessed with consuming beauty', false),
+					  (11, 'Satoru', 'Gojo', 12, 07,  false, 27, 'Earth', 'Jujutsu sorcerer, teacher', true, 'Uses his ability known as infinity, physically cannot be touched or harmed, a master at cursed techniques and by far the most powerful being alive, is capable of domain expansion', 'chilidish, playfull, never serious, other wordly strong, funny, immature, badass, arrogant, rude', false),
+					  (11, 'Yuji', 'Itadori', 03, 20,  false, 16, 'Earth', 'Jujutsu sorcerer, student', true, 'supernatural strength, supernatural speed, abilitity to house the soul of the king of curses', 'funny, kind, strong, badass, caring, compassionate', true),
+					  (11, 'Megumi', 'Fushiguro', 12, 22, false, 16, 'Earth', 'Jujutsu sorcerer, student', true, 'prodigy, uses shikigami which summons creatures or items from shadows and can be used at anytime or anywhere, is capable of domain expansion', 'quiet, serious, compassionate, badass', false),
+					  (11, 'Nobara', 'Kugisaki', 08, 17, false, 16, 'Earth', 'Jujutsu sorcerer, student', true, 'Uses a cursed technique which involves hammering nails through the victim, can exterminate creatures from far or close', 'arrogant, funny, strong', false),
+					  (11, 'Maki', 'Zenin', 01, 20, false, 16, 'Earth', 'Jujutsu sorcerer, student', true, 'Lacks cursed energy but has abnormal physical powers, including being very capable of weilding weapons with cursed energy', 'smug, arrogant, strong, badass, caring', false),
+					  (11, 'Toge', 'Inumaki', 10, 23, false, 16, 'Earth', 'Jujutsu sorcerer, student', true, 'Uses cursed speech, whatever word or words he says becomes actions', 'very quiet, doesnt speak in full sentences due to being a cursed speech user, can only talk in sushi ingredients', false),
+					  (11, 'Panda', '', 03, 25, false, 0, 'Earth', 'Jujutsu sorcerer, student', true, 'Uses cursed energy and martial arts to fight, is also a cursed spirit, oh and is also a panda', 'funny, strong, sensible, soft-spoken', false),
+					  (11, 'Mai', 'Zenin', 01, 20, false, 16, 'Earth', 'Jujutsu sorcerer, student', true, 'Uses cursed energy to fire bullets out of a gun, is the sister to maki', 'weak, jealous, mean', false),
+					  (11, 'Aoi', 'Todo', 09, 23, false, 18, 'Earth', 'Jujutsu sorcerer, student', true, 'Uses cursed energy to swap places with anything or anybody else who has cursed energy in a radius around him, is also freakishly strong and an excellent fighter', 'hillarious, hates boring men, judgemental , intelligent, hated, strong, badass, weird, crazy, compassionate, loves tall women with a big ass', false),
+					  (11, 'Kento', 'Nanami', 07, 03, false, 28, 'Earth', 'Jujutsu sorcerer', true, 'Uses cursed energy to create and target a weakpoint on his opponents making him much stronger than he really is', 'quiet, realistic, protector, teacher, full of wisdom, relatable', false),
+					  (11, 'Mahito', '', 00, 00, false, 00, 'Earth', 'Cursed spirit', true, 'Uses cursed energy to manipulate and change his body and soul on a whim, is also capable of manipulating other peoples body and souls and turning them into detestable creatures with no sign of intelligence left, is capable of domain expansion', 'sadistic, evil, childish, strong, cruel', false),
+					  (11, 'Jogo', '', 00, 00, false, 00, 'Earth', 'Cursed spirit', true, 'Uses cursed energy to create intense flames capable of burning people alive and killing instantly, is capable of domain expansion', 'short-tempered, selfish, evil, cruel', false),
+					  (11, 'Hanami', '', 00, 00, false, 00, 'Earth', 'Cursed spirit', false, 'Uses and steals cursed energy from the earth in order to manipulate the earth at will, is capable of domain expansion', 'quiet, strong, fast, scary', false),
+					  (11, 'Ryomen', 'Sukuna', 00, 00, false, 1000, 'Earth', 'Cursed spirit former human', false, 'King of curses, is insanely strong and capable of nearly any feat, master at combat and cursed energy, can regenerate at high speeds as well as use a variety of techniques, can use domain expansion', 'arrogant, cruel, truly-evil, sadistic, strong, badass, malicious, pyschotic, well-spoken', false),
+					  (12, 'Saitama', '', 04, 21, false, 25, 'Earth', 'Hero - Strongest hero who saves the world over and over', true, 'The strongest human ever, commonly compared to a god, is capable of splitting the earth with a singular punch','funny, non serious, always bored, vauge, plain looking, average, badass', true),
+					  (12, 'Genos', '', 07, 26, false, 19, 'Earth', '#14 S-class hero, one of the strongest heros on planet earth', true, 'Desciple of saitama, is a teenage cyborg with nearly unlimited weaponry at his disposal', 'serious, holds a grudge', false),
+					  (12, 'Tatsumaki', 'Tornado', 05, 28, false, 28, 'Earth', '#2 S-class hero - one of the strongest heroes on planet earth', true, 'Master of telekenisis, can create black holes at will and warp time and space as she pleases', 'childish, spoiled, brat, beautiful, annoying', false),
+					  (12, 'Bang', 'Silverfang', 03,19, false, 81, 'Earth', '#3 S-class hero - one of the strongest heroes on planet earth', true, 'Master of martial arts, instructor of his dojo, uses a technique known as fist of flowing water', 'old, wise, strong, badass, quiet, observant', false),
+					  (12, 'Atomic', 'Samaurai', 07, 25, false, 37, 'Earth', '#4 S-class hero - one of the strongest heroes on planet earth', true, 'Master swordsman and is looked up to for council and wisdom', 'strong, quiet, observant, badass, funny', false),
+					  (12, 'King', '', 03, 19, false, 25, 'Earth', '#7 S-class hero - one of the strongest heroes on planet earth', true, 'King is actually not strong at all is was appointed an S class hero soley for taking credit for things he didnt do, he has no capable fighting abilities', 'scared, coward, funny, average, normal', false),
+					  (13, 'Uraraka', 'Ochako', 12,27, false, 16, 'Earth', 'Student at U.A Highschool', true, 'Has the ability to control gravity and also control its effects on items even herself, can make anything weightless', 'kind, caring, compassionate, thoughtful, sweet', false),
+					  (13, 'Toga', 'Himiko', 08, 07, false, 17, 'Earth', 'Member of the Leauge of Villians', false, 'Has the ability to shape shift into anyone whos blood or dna she obtains', 'pyschotic, sadistic, evil, careless, scary', false),
+					  (13, 'Momo', 'Yaoyorozu', 09, 23, false, 16, 'Earth', 'Student at U.A Highschool', true, 'Has the ability to create items from nothing, seen as a divine power', 'indecisive, doubtful, prodigy', false),
+					  (13, 'Shoto', 'Todoroki', 01, 11, false, 16, 'Earth', 'Student at U.A Highschool', true, 'Has both fire and ice abilities, can create an inferno with one side of his body and summon an area of ice with his other side', 'smart, thoughtful, strong, badass, careful, prodigy', false),
+					  (13, 'Kirishima', 'Eijiro', 09, 16, false, 16, 'Earth', 'Student at U.A Highschool', true, 'Has the ability to harden his body to the same hardness as diamonds, also a master at martial arts', 'funny, thoughtful, selfless', false),
+					  (13, 'Aizawa', 'Shota', 11, 8, false, 31, 'Earth', 'Teacher at U.A Highschool', true, 'Has the ability to gaze upon someone else and temporarily prevent there quirk/power from being used or activated, essentially making them a normal human being', 'quiet, selfess, badass, observant', false),
+					  (13, 'Midoriya', 'Izuku', 08, 15, false, 16, 'Earth', 'Student at U.A Highschool', true, 'Formerly powerless/quirkless, now has the strongest hero ability, has super-human strength faster and stronger than anyone else', 'kind, doubtful, indecisive, strong, motivational, hard-working', true),
+					  (13, 'Tomura', 'Shigarki', 04, 04, false, 21, 'Earth', 'Leader of the league of villians', false, 'Has the ability to decay anything he touches', 'sadistic, evil, chaotic', false),
+					  (13, 'Ashido', 'Mina', 07, 30, false, 16, 'Earth', 'Student at U.A Highschool', true, 'Has the ability to secrete acidic liquid', 'talkative, loud, judgemental', false),
+					  (13, 'Kyoka', 'Jiro', 08, 01, false, 16, 'Earth', 'Student at U.A Highschool', true, 'Has the ability to create soundwaves which impair everyone but her', 'rockstar, energetic, loves music', false),
+					  (13, 'Mirio', 'Togata', 07, 15, false, 18, 'Earth', 'Student at U.A Highschool', true, 'Has the ability to phase in and out of solid like objects, but was robbed of this power by a quirk destroying drug', 'goofy, funny, enthusiastic, playful, kind', false),
+					  (13, 'Dabi', '', 01, 18, false, 18, 'Earth', 'Member of the leauge of villians', false, 'Has the ability to create flames so hot they turn blue', 'quiet, destructive, powerful, badass', false),
+					  (13, 'All', 'Might', 03, 17, false, 33, 'Earth', 'Teacher at U.A Highschool', true, 'Formerly the number one hero, relinquished his powers to his predecessor', 'Arrogant, strong, funny, joyful, insipirational', false),
+					  (14, 'Gon', 'Frecess', 05, 05, false, 12, 'Earth', 'Licensed Hunter', true, 'Son of one of the top hunters, Gin Frecess, prodigy', 'funny, goofy, carefree, kind, sweet, joyful, happy', true),
+					  (14, 'Killua', 'Zoldyck', 07, 07, false, 12, 'Earth', 'Licensed Hunter, Former assassin', true, 'Son of one of zoldyck family, a family of master assassins who have been assassins for generations, seen as a prodigy, can move at incredible speeds with perciscion and stealth, can harden his fingers into knives and also generate electricity and move at the speed of light.', 'cold, funny, distant, sadistic, evil, joyful, protective, compassionate', true),
+					  (14, 'Illumi', 'Zoldyck', 09, 22, false, 22, 'Earth', 'Licensed Hunter, professional assassin', false, 'Son of the zoldyck clan, older brother to killua, capable of morphin and altering the shape of those he attacks by using nen needles, can also mind control and manipulate his brother', 'sadistic, controlling, evil, strong, scary, intimidating, thoughtful', false),
+					  (14, 'Silva', 'Zoldyck', 00, 00, false, 46, 'Earth', 'Licensed Hunter, professional assassin', true, 'Father of the zoldyck family, is a neutral power', 'bold, careful, strong, wise, quiet, cunning', false),
+					  (14, 'Alluka', 'Zoldyck', 02, 24, false, 11, 'Earth', 'Child', true, 'Daughter of the zoldyck family, is possed by a demonic power which can grant any wish in the world but has consequences depending on how dire/great the wish is', 'childlike, joyful, scary, misunderstood', false),
+					  (14, 'Zeno', 'Zoldyck', 00, 00, false, 67, 'Earth', 'Licensed Hunter, professional assassin', true, 'Is a master of nen, despite his old age he is an expert at martial arts and stealth attacks', 'quiet, old, wise, witty', false),
+					  (14, 'Milluki', 'Zoldyck', 00, 00, false, 19, 'Earth', 'Professional assassin', false, 'Unlike the other Zoldycks milluki lacks physical abilities as he is short, fat, and very slow, however he makes up for this by using his intellilect to creatively come up with ways he can still take on jobs as an assassin', 'rude, arrogant, fat, snob, evil', false),
+					  (14, 'Kikyo', 'Zoldyck', 00, 00, false, 42, 'Earth', 'Professional assassin', false, 'Mother to the Zoldyck family', 'pyschotic, terrifying, evil', false),
+					  (14, 'Kurapika', '', 04, 04, false, 19, 'Earth', 'Licensed Hunter, last surviving member of the Kurta Clan', true, 'Last surviving member of the kurta, can summon a chain prison that is soley effective against the phantom troupe, if used against anyone else it will result in his death', 'calm, quiet, vengeful, strong, willful', false),
+					  (14, 'Mr', 'Wing', 00, 00, false, 43, 'Earth', 'Nen-Instructor, taught and instructed both gon and killua how to weild nen powers', true , 'Master nen user', 'kind, sweet, caring', false),
+					  (14, 'Shalnark', '', 00, 00, true, 22, 'Earth', 'Member of the phantom troupe', false, 'Uses his nen powers to control and manipulate those around him who have been probed by one of his needles', 'evil, sadistic, childish', false),
+					  (14, 'Palm', 'Siberia', 00, 00, false, 23, 'Earth', 'Former Licensed hunter, former human now a chimeria, also a fortune teller', true, 'Can see into the future and use a clairvoyant power', 'Scary, terrifying, pyschotic', false),
+					  (14, 'Knuckle', 'Bine', 00, 00, false, 27, 'Earth', 'Licensed hunter', true, 'Uses an ability called nen apr which taxes his opponents over time and evantually robs them of all there nen powers', 'friendly, mentoring, pacificst', false),
+					  (14, 'Shoot', 'McMahon', 00, 00 ,false, 28, 'Earth', 'Licensed hunter', true, 'Uses an ability which captures anything or part of a beings body and traps it inside of a cage ', 'mentoring, quiet, observant', false),
+					  (14, 'Kite', '', 00, 00, true, 31, 'Earth', 'Licensed hunter', true, 'Uses an ability called crazy slots, which involves him spinning a talking slot machine, gettinga  random item and having to use that item', 'strong, quiet, kind, thoughtful, funny', false),
+					  (14, 'Hanzo', '', 00, 00, false, 21, 'Earth', 'Licensed hunter, shinboi', true, 'Uses shinjobi tactics combined with immense phyiscal powers to outmatch his opponents', 'strong, smart, quick', false),
+					  (14, 'Hisoka', 'Morrow', 06, 06, false, 00, 'Earth', 'Licensed hunter, phantom troupe member', false, 'Uses a power known as bungee gum which contains the power of both rubber and gum making it very verstatile', 'is considered a very chaotic neutral person, is neither good nor bad he simply sides on whichever side benefits his ideals the most. Is also a pervert', false),
+					  (14, 'Morel', 'Mackernasey', 00, 00, false, 42, 'Earth', 'Licensed hunter', true, 'Has a pipe which produces a smoke power, consist of clones made from nen smoke', 'wise, strong, careful, thoughtful', false),
+					  (14, 'Issac', 'Netero', 00, 00, true, 110, 'Earth', 'Chairmen of the hunter association', true, 'Uses an ancient power refered to as the 100-type-Guanyin which summons a massive divine like figure capable of performing immenseley powerful martial arts', 'wise, old, badass, smart, careful', false);
+				
+							  
+					  
+						
